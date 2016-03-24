@@ -3,6 +3,7 @@
 	<head>
 		<title>Message Board</title>
 		<meta charset="UTF-8">
+		<meta http-equiv="Cache-Control" content="no-store" />
 		<style type="text/css">
 			* {
 				margin: 0px; 
@@ -45,10 +46,30 @@
 				text-indent: -10px;
 				text-align: justify;
 			}
-			.comment {
+			.comment_form {
 				margin-left: 30px;
 				font-size: .9em; 
 				color: black;
+			}
+			.comment {
+				background-color: rgba(100,100,100,.8);
+				border-radius: 5px; 
+				padding: 5px;
+				margin: 5px auto;
+				margin-left: 20px; 
+			}
+			.comment_name { 
+				font-weight: bold;
+				color: black;
+			}
+			.comment_name, .comment_text {
+				display: inline-block;
+			}
+			.comment_date { color: silver; }
+			.comment_box { 
+				max-height: 200px;
+				overflow: auto; 
+				margin: 5px auto; 
 			}
 		</style>
 	</head>
@@ -72,7 +93,18 @@
 				<div class="message">
 					<label><%= messages[i].name %></label>
 					<p><%= "- "+messages[i].text %></p>
-					<form action='/comments/:<%= messages[i].id %>' method='post' class='comment'>
+					<div class="comment_box">
+					<%
+						for(var x = messages[i].comments.length -1; x >= 0; x--){%>
+							<div class="comment">
+								<p class="comment_name"><%= messages[i].comments[x].name + ": "%></p>
+								<p class="comment_text"><%= messages[i].comments[x].text%></p>
+								<p class="comment_date"><%= messages[i].comments[x].date.toString() %></p>
+							</div>
+						<%}
+					%>
+					</div>
+					<form action='/comments/<%= messages[i].id %>' method='post' class='comment_form'>
 						<label for='name'>Name:</label><br>
 						<input type='text' name='name' id='name'><br>
 						<label for='text'>Message:</label><br>
